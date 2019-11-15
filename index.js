@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+var url = process.env.mongoURL || "mongodb://localhost:27017/";
 var express = require('express');
 var cors = require('cors') 
 var bodyParser = require('body-parser')
