@@ -93,7 +93,7 @@ app.get('/createCollection/:collection', function(req, res, next) {
     dbo.createCollection(req.params.collection, function(err, res) {
         if (err) throw err;
         console.log("Collection created!");
-        db.close();
+        //db.close();
     });
     res.json({cool:true})
 })
