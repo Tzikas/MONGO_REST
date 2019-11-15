@@ -16,8 +16,8 @@ var dbo;
 
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    dbo = db.db("MONGO_REST");
-
+    dbo = db.db("ironrest");
+    
 });
 
 
