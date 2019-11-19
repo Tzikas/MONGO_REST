@@ -55,6 +55,7 @@ Simple API crud functionality.
 
 	PUT /:collection/:id
     
+*Pass update in req.body (e.g.)  https://ironrest.herokuapp.com/puppies, {frenchie: 'super cute'}*
    
 ### Additional options
 
