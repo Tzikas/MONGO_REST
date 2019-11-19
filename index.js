@@ -16,119 +16,22 @@ var dbo;
 
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    //dbo = db.db("ironrest");
-    dbo = db.db("MONGO_REST");
+    dbo = db.db("ironrest");
+    //dbo = db.db("MONGO_REST");
     
 });
 
 
 
+/**COLLECTIONS */
 
-// Get all the characters info from http://localhost:8000/characters
-// Get a single character info from http://localhost:8000/characters/:id
-// Create a single character posting the data to http://localhost:8000/characters
-// Delete a single character through his id in http://localhost:8000/characters/:id
-// Edit a single character through his id in http://localhost:8000/characters/:id
-
-
-
-app.get('/findOne/:collection', function(req, res, next) {
-
-
-    var ObjectId = require('mongodb').ObjectID;
-
-    var o_id = new ObjectId("5dd3bcc094f9f9c1832116be");
-
-    var query = {};
-    console.log(req.query);
-    if(req.query){
-        query = req.query;
-    }
-    console.log('q',query)
-
-    dbo.collection(req.params.collection).findOne({_id:o_id}, function(err, result) {
-        if (err) throw err;
-        console.log(result);
-        res.json(result)
-        //db.close();
-    });
-})
-
-
-// app.get('/findOne/:collection', function(req, res, next) {
-
-//     var query = {};
-//     console.log(req.query);
-//     if(req.query){
-//         query = req.query;
-//     }
-//     console.log('q',query)
-
-//     dbo.collection(req.params.collection).findOne(query, function(err, result) {
-//         if (err) throw err;
-//         console.log(result);
-//         res.json(result)
-//         //db.close();
-//     });
-// })
-
-
-app.post('/:collection', function(req, res, next){
-
-    console.log(req.body, '=-=-=-=-')
-    dbo.collection(req.params.collection).insertOne(req.body, function(err, response) {
-        if (err) throw err;
-        console.log("1 document inserted");
-        res.json(response)    
-    })
-})
-
-
-// app.put('/updateOne/:collection', function(req, res, next) {
-
-//     var myquery = { address: "Valley 345" };
-//     var query =  req.query.query;
-//     var newvalues = { $set: req.query.newValues };
-
-
-//     dbo.collection(req.params.collection).updateOne(query, newValues, function(err, result) {
-//         if (err) throw err;
-//         console.log(result);
-//         res.json(result)
-//         //db.close();
-//     });
-// })
-
-
-
-app.delete('/deleteOne/:collection', function(req, res, next){
-
-    var query = {};
-    if(req.query){
-        query = req.query;
-    }
-
-    dbo.collection(req.params.collection).deleteOne(query, function(err, obj) {
-        if (err) throw err;
-        console.log("1 document deleted");
-        res.json(obj)
-    });
-})
-
-
-
-
-
-
-
-
-app.get('/createCollection/:collection', function(req, res, next) {
-    dbo.createCollection(req.params.collection, function(err, res) {
+app.post('/createCollection/:collection', function(req, res, next) {
+    dbo.createCollection(req.params.collection, function(err, result) {
         if (err) throw err;
         console.log("Collection created!");
         //db.close();
+        res.json({collectionCreated:req.params.collection})
     });
-    res.json({cool:true})
 })
 
 app.delete('/deleteCollection/:collection', function(req, res, next){
@@ -144,20 +47,97 @@ app.delete('/deleteCollection/:collection', function(req, res, next){
 
 
 
+/**MORE FEATURES */
+app.get('/findOne/:collection', function(req, res, next) {
+    var query = {};
+    if(req.query){
+        query = req.query;
+    }
+    dbo.collection(req.params.collection).findOne(query, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.json(result)
+    });
+})
+
+app.delete('/deleteOne/:collection', function(req, res, next){
+
+    var query = {};
+    if(req.query){
+        query = req.query;
+    }
+    dbo.collection(req.params.collection).deleteOne(query, function(err, obj) {
+        if (err) throw err;
+        console.log("1 document deleted");
+        res.json(obj)
+    });
+})
+
+
+
+
+/**THE ORIGINALS */
+
+
+app.put('/:collection/:id', function(req, res, next){
+    console.log('in put', req.params,req.body)
+    var ObjectId = require('mongodb').ObjectID;
+    var o_id = new ObjectId(req.params.id);
+    var newValues = { $set: req.body };
+    dbo.collection(req.params.collection).updateOne({_id:o_id}, newValues, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.json(result)
+    });
+})
+
+app.delete('/:collection/:id', function(req, res, next){
+    var ObjectId = require('mongodb').ObjectID;
+    var o_id = new ObjectId(req.params.id);
+
+    dbo.collection(req.params.collection).deleteOne({_id:o_id}, function(err, obj) {
+        if (err) throw err;
+        console.log("1 document deleted");
+        res.json(obj)
+    });})
+
+app.get('/:collection/:id', function(req, res, next){
+    var ObjectId = require('mongodb').ObjectID;
+    var o_id = new ObjectId(req.params.id);
+
+    dbo.collection(req.params.collection).findOne({_id:o_id},  function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.json(result)
+        //db.close();
+    })
+})
+
+app.post('/:collection', function(req, res, next){
+
+    dbo.collection(req.params.collection).insertOne(req.body, function(err, response) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        res.json(response)    
+    })
+})
 
 app.get('/:collection', function(req, res, next){
     dbo.collection(req.params.collection).find({}).toArray(function(err, result) {
         if (err) throw err;
-        console.log(result);
         res.json(result)
     })
 })
 
 app.get('/', function(req, res, next) {
-    dbo.listCollections().toArray(function(err, collections) {
-        res.json({collections:collections})
+    dbo.listCollections({}, {nameOnly: true }).toArray(function(err, collections) {
+        res.json(collections)
     });
 })
+
+
+
+
 
 
 app.listen((process.env.PORT || 3000), function(){
