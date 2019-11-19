@@ -67,7 +67,7 @@ Pass update in req.body *(e.g.)  /puppies, {frenchie: 'super cute'}*
      
  **Delete document by key value relationship**
 
-	DELETE /findOne/:collection?key=value
+	DELETE /deleteOne/:collection?key=value
    
     
     
