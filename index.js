@@ -81,6 +81,9 @@ app.delete('/deleteOne/:collection', function(req, res, next){
 
 app.put('/:collection/:id', function(req, res, next){
     console.log('in put', req.params,req.body)
+    if(Object.keys(obj).length === 0 && obj.constructor === Object){
+        return res.json({error:'object cannot be empty'})
+    }
     var ObjectId = require('mongodb').ObjectID;
     var o_id = new ObjectId(req.params.id);
     var newValues = { $set: req.body };
