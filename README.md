@@ -1,104 +1,72 @@
+# Ironhack Mongo Rest API
 
-    app.get('/findOne/:collection', function(req, res, next) {
+Simple REST API to allow for basic CRUD at the endpoint [https://ironrest.herokuapp.com](https://ironrest.herokuapp.com/ )
 
-        var query = {};
-        console.log(req.query);
-        if(req.query){
-            query = req.query;
-        }
-        console.log('q',query)
+*The location of this repo will probably change to an IH one I just don't know where yet*
 
-        dbo.collection(req.params.collection).findOne(query, function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            res.json(result)
-            //db.close();
-        });
-    })
-
-
-    app.post('/insertOne/:collection', function(req, res, next){
-
-        dbo.collection(req.params.collection).insertOne(req.body, function(err, response) {
-            if (err) throw err;
-            console.log("1 document inserted");
-            res.json(response)    
-        })
-    })
-
-
-    app.put('/updateOne/:collection', function(req, res, next) {
-
-        var myquery = { address: "Valley 345" };
-        var query =  req.query.query;
-        var newvalues = { $set: req.query.newValues };
-
-
-        dbo.collection(req.params.collection).updateOne(query, newValues, function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            res.json(result)
-            //db.close();
-        });
-    })
+##### **USE WITH CAUTION. This api/database is for educational purposes and is _not_ private and is _not_ secure.**
 
 
 
-    app.delete('/deleteOne/:collection', function(req, res, next){
+# Usage
 
-        var query = {};
-        if(req.query){
-            query = req.query;
-        }
-
-        dbo.collection(req.params.collection).deleteOne(query, function(err, obj) {
-            if (err) throw err;
-            console.log("1 document deleted");
-            res.json(obj)
-        });
-    })
+Simple API crud functionality.  
 
 
+**See All Collection Names**
 
 
+	GET /
 
 
+**Find a specific collection by name**
 
 
-    app.get('/createCollection/:collection', function(req, res, next) {
-        dbo.createCollection(req.params.collection, function(err, res) {
-            if (err) throw err;
-            console.log("Collection created!");
-            //db.close();
-        });
-        res.json({cool:true})
-    })
-
-    app.delete('/deleteCollection/:collection', function(req, res, next){
-    dbo.collection(req.params.collection).drop(function(err, delOK) {
-        if (err) {
-            res.json(err)
-        } else {
-            res.json(delOK)   
-        }
-    })
-    })
+	GET /:collection
+    
+*(e.g.) https://ironrest.herokuapp.com/puppies* will get all the puppies
 
 
+**Create a Collection by passing any name you want.**
 
+	POST /createCollection/:collection
+    
 
+**Delete a Collection**
 
-    app.get('/:collection', function(req, res, next){
-        dbo.collection(req.params.collection).find({}).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            res.json({result})
-        })
-    })
+	DELETE /deleteCollection/:collection
+ 
+   
+**Insert new document in collection**
 
-    app.get('/', function(req, res, next) {
-        dbo.listCollections().toArray(function(err, collections) {
-            res.json({collections:collections})
-        });
-    })
+	POST /:collection
 
+*Pass post in req.body (e.g.)  https://ironrest.herokuapp.com/puppies, {frenchie: 'cute'}*
+
+**Get a document by _id**
+
+	GET /:collection/:id
+    
+**Delete a document by _id**
+
+	DELETE /:collection/:id
+    
+**Update a document by _id**
+
+	PUT /:collection/:id
+    
+   
+### Additional options
+
+**Find document by key value relationship**
+   
+	GET /findOne/:collection?key=value
+    
+ *(e.g) /findOne/puppies?frenchie=cute*
+     
+ **Delete document by key value relationship**
+
+	DELETE /findOne/:collection?key=value
+   
+    
+    
