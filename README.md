@@ -41,7 +41,7 @@ Simple API crud functionality.
 
 	POST /:collection
 
-*Pass post in req.body (e.g.)  /puppies, {frenchie: 'cute'}*
+Pass post in req.body *(e.g.)  /puppies, {frenchie: 'cute'}*
 
 **Get a document by _id**
 
@@ -55,7 +55,7 @@ Simple API crud functionality.
 
 	PUT /:collection/:id
     
-*Pass update in req.body (e.g.)  /puppies, {frenchie: 'super cute'}*
+Pass update in req.body *(e.g.)  /puppies, {frenchie: 'super cute'}*
    
 ### Additional options
 
