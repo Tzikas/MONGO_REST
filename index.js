@@ -34,15 +34,16 @@ app.post('/createCollection/:collection', function(req, res, next) {
     });
 })
 
-app.delete('/deleteCollection/:collection', function(req, res, next){
-  dbo.collection(req.params.collection).drop(function(err, delOK) {
-      if (err) {
-          res.json(err)
-      } else {
-          res.json(delOK)   
-      }
-   })
-})
+/**REMOVED FOR SECURITY **/
+// app.delete('/deleteCollection/:collection', function(req, res, next){
+//   dbo.collection(req.params.collection).drop(function(err, delOK) {
+//       if (err) {
+//           res.json(err)
+//       } else {
+//           res.json(delOK)   
+//       }
+//    })
+// })
 
 
 
