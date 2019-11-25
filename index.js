@@ -34,16 +34,16 @@ app.post('/createCollection/:collection', function(req, res, next) {
     });
 })
 
-/**REMOVED FOR SECURITY **/
-// app.delete('/deleteCollection/:collection', function(req, res, next){
-//   dbo.collection(req.params.collection).drop(function(err, delOK) {
-//       if (err) {
-//           res.json(err)
-//       } else {
-//           res.json(delOK)   
-//       }
-//    })
-// })
+/**YIKES **/
+app.delete('/deleteCollection/:collection', function(req, res, next){
+  dbo.collection(req.params.collection).drop(function(err, delOK) {
+      if (err) {
+          res.json(err)
+      } else {
+          res.json(delOK)   
+      }
+   })
+})
 
 
 
@@ -135,6 +135,7 @@ app.get('/:collection', function(req, res, next){
 
 app.get('/', function(req, res, next) {
     dbo.listCollections({}, {nameOnly: true }).toArray(function(err, collections) {
+        collections.unshift({DOCS: `https://github.com/Tzikas/MONGO_REST`})
         res.json(collections)
     });
 })
