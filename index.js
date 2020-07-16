@@ -61,6 +61,20 @@ app.get('/findOne/:collection', function(req, res, next) {
     });
 })
 
+
+app.get('/findAll/:collection', function(req, res, next) {
+    var query = {};
+    if(req.query){
+        query = req.query;
+    }
+    dbo.collection(req.params.collection).find(query).toArray(function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.json(result)
+    });
+})
+
+
 app.delete('/deleteOne/:collection', function(req, res, next){
 
     var query = {};
@@ -139,6 +153,11 @@ app.get('/', function(req, res, next) {
         res.json(collections)
     });
 })
+
+
+
+
+
 
 
 
